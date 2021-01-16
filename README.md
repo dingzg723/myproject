@@ -1,6 +1,6 @@
 # 介绍
 这是一个简单的Django项目，主要功能是从百度获取covid-19疫情数据，使用pyecharts将数据可视化。
-python版本不应低于3.6.5，Django版本不应低于3.1.3
+python版本不应低于3.6.5，Django版本不应低于3.1.3。
 # 效果如下
 ![累计确诊](../main/累计确诊.png)
 
@@ -24,4 +24,4 @@ python manage.py runserver
 127.0.0.1:8000  
 # 感谢
 感谢[TRHX](https://github.com/TRHX)的爬虫代码  
-感觉[Pyecharts](https://pyecharts.org/)中文文档
+感谢[Pyecharts](https://pyecharts.org/#/zh-cn/intro)中文文档  
