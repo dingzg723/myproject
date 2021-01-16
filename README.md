@@ -1,1 +1,3 @@
-# myproject
+# 介绍
+这是一个简单的Django项目，主要功能是从百度获取covid-19疫情数据，使用pyecharts绘制成疫情地图。
+# 效果如下
