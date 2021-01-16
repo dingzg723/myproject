@@ -24,4 +24,4 @@ python manage.py runserver
 127.0.0.1:8000  
 # 感谢
 感谢[TRHX](https://github.com/TRHX)的爬虫代码  
-感觉[Pyecharts](htts://pyecharts.org/)中文文档
+感觉[Pyecharts](https://pyecharts.org/)中文文档
