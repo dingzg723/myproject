@@ -1,11 +1,8 @@
 from django.shortcuts import render,redirect
 import json
-from random import randrange
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from . import data_get
-from pyecharts.charts import Bar,Page
-from pyecharts import options as opts
 from . import data_map
 import ast
 # Create your views here.
@@ -50,17 +47,6 @@ f = open('./echarts/covid_19.json','r',encoding = 'utf-8')
 data = ast.literal_eval(f.read())
 f.close()
 plot_map(data)
-
-def bar_base() -> Bar:
-    c1 = (
-        Bar()
-        .add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
-        .add_yaxis("商家A", [randrange(0, 100) for _ in range(6)])
-        .add_yaxis("商家B", [randrange(0, 100) for _ in range(6)])
-        .set_global_opts(title_opts=opts.TitleOpts(title="Bar-基本示例", subtitle="我是副标题"))
-        .dump_options_with_quotes()
-    )
-    return c1
 
 def update(request):
     data = data_get.init()
