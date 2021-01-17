@@ -23,5 +23,5 @@ python manage.py runserver
 访问项目：  
 127.0.0.1:8000  
 # 感谢
-感谢[TRHX](https://github.com/TRHX)的爬虫代码  
+感谢[TRHX](https://github.com/TRHX)的爬虫与可视化代码  
 感谢[Pyecharts](https://pyecharts.org/#/zh-cn/intro)中文文档  
