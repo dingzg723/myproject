@@ -56,6 +56,8 @@ def china_total_data(data):
                 city['crued'] = '0'
             if city['died'] == '':
                 city['died'] = '0'
+            if 'confirmedRelative' not in city:
+                city['confirmedRelative'] = '0'
             ws_city.append([
                 city['city'],'0',city['confirmed'],
                 city['crued'],city['died'],city['confirmedRelative']
