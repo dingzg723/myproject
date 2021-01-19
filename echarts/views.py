@@ -83,10 +83,6 @@ class GdView(APIView):
         global gs_map
         return JsonResponse(json.loads(fte_map))
 
-class ChartView(APIView):
-    def get(self,request,*args,**kwargs):
-        return JsonResponse(json.loads(bar_base()))
-
 class IndexView(APIView):
     def get(self,request,*args,**kwargs):
         return render(request,'echarts/covid_19.html')
