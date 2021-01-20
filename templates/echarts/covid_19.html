@@ -4,14 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>疫情大数据报告</title>
-    <script src="{% static 'echarts/jquery/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'echarts/js/echarts.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'echarts/js/maps/china.js' %}"></script>
-    <script type="text/javascript" src="{% static 'echarts/js/maps/world.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'echarts/bootstrap/css/bootstrap.min.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1-lts/dist/umd/popper.min.js"></script>
-    <script src="{% static 'echarts/jquery/jquery-3.5.1.js' %}"></script>
     <!--script src="{% static 'echarts/layer/layer.js' %}"></script-->
+    <link rel="stylesheet" href="{% static 'echarts/bootstrap/css/bootstrap.min.css' %}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <p class="navbar-brand">疫情大数据报告</p>
@@ -20,62 +14,89 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'echarts:covid_19_update' %}">更新</a>
             </li>
-
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">返回</a>
+              <a class="nav-link" href="{% url 'echarts:covid_19' %}">返回</a>
             </li>
           </ul>
         </div>
-
       </div>
     </nav>
 </head>
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1-lts/dist/umd/popper.min.js"></script>
+    <script src="{% static 'echarts/jquery/jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'echarts/jquery/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'echarts/js/echarts.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'echarts/js/maps/china.js' %}"></script>
+    <script type="text/javascript" src="{% static 'echarts/js/maps/world.js' %}"></script>
+    <script type="text/javascript" src="{% static 'echarts/bootstrap/js/bootstrap.min.js' %}"></script>
 <div class="container">
     <div class="row">
         <div class="col-2">
-            <a class="nav-link" href="https://github.com/ljc545w/myproject">Github</a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/ljc545w/myproject" target="_blank">Github</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        国内疫情
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <a class="dropdown-item" href="#" onclick="show('1','2','ctmap')">累计确诊</a>
+                        <a class="dropdown-item" href="#" onclick="show('1','2','csmap')">现有确诊</a>
+                        <a class="dropdown-item" href="#" onclick="show('2','1','fimap')">疫情走势</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        国外疫情
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        <a class="dropdown-item" href="#" onclick="show('1','2','gtmap')">累计确诊</a>
+                        <a class="dropdown-item" href="#" onclick="show('1','2','gsmap')">现有确诊</a>
+                        <a class="dropdown-item" href="#" onclick="show('2','1','ftemap')">疫情走势</a>
+                    </div>
+                </li>
+            </ul>
         </div>
         <div class="col-9">
-            <div id="map1" style="height:550px;"></div>
-            <div id="map2" style="height:550px;"></div>
-            <div id="map3" style="height:370px;"></div>
-            <div id="map4" style="height:550px;"></div>
-            <div id="map5" style="height:550px;"></div>
-            <div id="map6" style="height:370px;"></div>
-        </div>
-        <div class="col-1">
-            <!--p class="navbar-brand">像是一种奢侈</p-->
+            <div id="map1" style="height:550px;display:none"></div>
+            <div id="map2" style="height:370px;display:none"></div>
         </div>
     </div>
 </div>
+<div>
+    <br><br><br>
+</div>
+<footer class="py-3 bg-dark fixed-bottom">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; pyecharts.org 2021</p>
+    </div>
+</footer>
 <script>
-    var chart1 = echarts.init(document.getElementById('map1'),'write',{renderer:'canvas'});
-    var chart2 = echarts.init(document.getElementById('map2'),'write',{renderer:'canvas'});
-    var chart3 = echarts.init(document.getElementById('map3'),'write',{renderer:'canvas'});
-    var chart4 = echarts.init(document.getElementById('map4'),'write',{renderer:'canvas'});
-    var chart5 = echarts.init(document.getElementById('map5'),'write',{renderer:'canvas'});
-    var chart6 = echarts.init(document.getElementById('map6'),'write',{renderer:'canvas'});
-
-    $(
-        function() {
-            fetchData(chart1,"ctmap");
-            fetchData(chart2,"csmap");
-            fetchData(chart3,"fimap");
-            fetchData(chart4,"gtmap");
-            fetchData(chart5,"gsmap");
-            fetchData(chart6,"ftemap");
+    $ (function() {
+        if('{{ maptype }}' == 'fimap' || '{{ maptype }}' == 'ftemap'){
+            show('2','1','{{ maptype }}');
+        } else{
+            show('1','2','{{ maptype }}');
         }
-    );
-
-    function fetchData(chart,string) {
+    }
+    )
+    function show(Id,nId,maptype) {
+        document.getElementById("map" + Id).style.display="block";
+        document.getElementById("map" + nId).style.display="none";
+        var chart = echarts.init(document.getElementById("map"+Id),'write',{renderer:'canvas'});
+        fetchData(chart,maptype);
+    }
+    function fetchData(chart,maptype) {
         $.ajax({
             type:"GET",
-            url:"/echarts/covid-19/" + string,
+            url:"/echarts/covid-19/" + maptype + "?maptype=" + maptype,
             dataType:'json',
+            //async:false,
             success:function (result) {
                chart.setOption(result.data);
-           }
+           },
         });
     }
 </script>

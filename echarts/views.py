@@ -47,6 +47,7 @@ f = open('./echarts/covid_19.json','r',encoding = 'utf-8')
 data = ast.literal_eval(f.read())
 f.close()
 plot_map(data)
+maptype = 'ctmap'
 
 def update(request):
     data = data_get.init()
@@ -55,39 +56,43 @@ def update(request):
 
 class CtView(APIView):
     def get(self,request,*args,**kwargs):
-        global ct_map
+        global ct_map,maptype
+        mathtype = request.GET.get('maptype')
         return JsonResponse(json.loads(ct_map))
 
 class CsView(APIView):
     def get(self,request,*args,**kwargs):
-        global cs_map
+        global cs_map,maptype
+        mathtype = request.GET.get('maptype')
         return JsonResponse(json.loads(cs_map))
 
 class CdView(APIView):
     def get(self,request,*args,**kwargs):
-        global fi_map
+        global fi_map,maptype
+        mathtype = request.GET.get('maptype')
         return JsonResponse(json.loads(fi_map))
 
 class GtView(APIView):
-    global gt_map
     def get(self,request,*args,**kwargs):
+        global gt_map,maptype
+        mathtype = request.GET.get('maptype')
         return JsonResponse(json.loads(gt_map))
 
 class GsView(APIView):
     def get(self,request,*args,**kwargs):
-        global gs_map
+        global gs_map,maptype
+        mathtype = request.GET.get('maptype')
         return JsonResponse(json.loads(gs_map))
 
 class GdView(APIView):
     def get(self,request,*args,**kwargs):
-        global gs_map
+        global gs_map,maptype
+        mathtype = request.GET.get('maptype')
         return JsonResponse(json.loads(fte_map))
-
-class ChartView(APIView):
-    def get(self,request,*args,**kwargs):
-        return JsonResponse(json.loads(bar_base()))
 
 class IndexView(APIView):
     def get(self,request,*args,**kwargs):
-        return render(request,'echarts/covid_19.html')
+        global maptype
+        context = {'maptype':maptype}
+        return render(request,'echarts/covid_19.html',context = context)
 
