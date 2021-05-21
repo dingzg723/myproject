@@ -12,9 +12,21 @@ import pyecharts.options as opts
 import pyecharts.globals
 import warnings
 import json
+from itertools import groupby
+from itertools import zip_longest
 warnings.filterwarnings("ignore")
 pyecharts.globals._WarningControl.ShowWarning = False
 CurrentConfig.ONLINE_HOST = "./static/js/"
+
+def clean_date(date):
+    split_year = (list(g) for _, g in groupby(date, key='12.31'.__ne__))
+    new_date = [a + b for a, b in zip_longest(split_year, split_year, fillvalue=[])]
+    x_date = []
+    for i,j in zip(range(len(new_date)),new_date):
+        year = 2020 + i
+        for t in j:
+            x_date.append("{}.{}".format(year,t))
+    return x_date
 
 def china_total_map(wb):
     ws_time = wb['中国疫情数据更新时间']
@@ -354,6 +366,7 @@ def china_daily_map(wb):
         y_china_crued.append(china_crued[1])
     for china_died in ws_china_died.values:
         y_china_died.append(china_died[1])
+    x_date = clean_date(x_date)
         
     fi_map = (
         Line(init_opts = opts.InitOpts(height = '420px'))
@@ -420,6 +433,7 @@ def foreign_daily_map(wb):
         y_foreign_crued.append(foreign_crued[1])
     for foreign_died in ws_foreign_died.values:
         y_foreign_died.append(foreign_died[1])
+    x_date = clean_date(x_date)
 
     fte_map = (
         Line(init_opts=opts.InitOpts(height='420px'))
